@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Uma surpresa para você</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Caveat:wght@500;700&display=swap">
+<style>
+:root{--wine:#3d0f26;--wine2:#5a1838;--blush:#f7d6da;--rose:#e8798b;--gold:#d4a85a;--paper:#fff7f3;--ink:#3a1527;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;min-height:100vh;background:radial-gradient(120% 80% at 50% 0%,var(--wine2),var(--wine) 60%,#26091a);color:var(--blush);font-family:'Fraunces',Georgia,serif;line-height:1.6;overflow-x:hidden}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+#hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.h{position:absolute;bottom:-40px;color:var(--rose);opacity:.0;animation:rise linear forwards}
+@keyframes rise{10%{opacity:.5}100%{transform:translateY(-110vh) rotate(30deg);opacity:0}}
+section{position:relative;z-index:1}
+/* intro */
+#intro{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;padding:2rem;text-align:center;transition:opacity .8s}
+#intro.out{opacity:0;pointer-events:none}
+#intro h1{font-weight:400;font-style:italic;font-size:clamp(1.6rem,6vw,2.4rem);margin:0;max-width:18ch}
+.env{position:relative;width:min(300px,80vw);aspect-ratio:3/2;background:var(--wine2);border:2px solid var(--gold);border-radius:6px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.env::before{content:"";position:absolute;inset:0;background:linear-gradient(to top right,transparent 49.5%,rgba(212,168,90,.35) 50%) left/50% 100% no-repeat,linear-gradient(to top left,transparent 49.5%,rgba(212,168,90,.35) 50%) right/50% 100% no-repeat}
+.flap{position:absolute;left:0;right:0;top:0;height:55%;background:#6b1d42;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .9s ease;border-top:2px solid var(--gold)}
+.env.open .flap{transform:rotateX(180deg)}
+.seal{position:absolute;left:50%;top:50%;width:68px;height:68px;margin:-34px 0 0 -34px;border:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0586f,#a31f3d);color:#ffe3e8;font-size:2rem;box-shadow:0 4px 14px rgba(0,0,0,.5);transition:opacity .4s,transform .4s;animation:beat 1.6s ease-in-out infinite}
+.env.open .seal{opacity:0;transform:scale(.4);animation:none}
+@keyframes beat{50%{transform:scale(1.1)}}
+.hint{font-family:'Caveat',cursive;font-size:1.5rem;color:var(--gold);margin:0}
+/* conteudo */
+#main{display:none;padding:3rem 1.25rem 6rem;max-width:36rem;margin:0 auto}
+#main.show{display:block;animation:in 1s ease both}
+@keyframes in{from{opacity:0;transform:translateY(16px)}}
+.letter{background:var(--paper);color:var(--ink);padding:2.2rem 1.6rem;border-radius:4px;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.letter .to{font-family:'Caveat',cursive;font-size:2.6rem;font-weight:700;color:#a31f3d;margin:0 0 .6rem;line-height:1.1}
+.letter p{margin:0 0 1rem;font-size:1.08rem}
+.letter .sig{font-family:'Caveat',cursive;font-size:2rem;margin:1.4rem 0 0;text-align:right;color:#a31f3d}
+h2{font-weight:400;font-style:italic;font-size:1.7rem;text-align:center;margin:4rem 0 1.2rem}
+#time{display:none;grid-template-columns:repeat(4,1fr);gap:.6rem;text-align:center}
+#time.on{display:grid}
+#time div{border:1px solid var(--gold);border-radius:8px;padding:.8rem .2rem}
+#time b{display:block;font-size:1.7rem;font-weight:600;color:#fff}
+#time span{font-size:.85rem;color:var(--blush)}
+.reasons{display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem}
+.reasons button{width:3.4rem;height:3.4rem;border-radius:50%;border:1.5px solid var(--rose);background:transparent;color:var(--rose);font-size:1.4rem;transition:all .25s}
+.reasons button.seen{background:var(--rose);color:var(--wine)}
+#reason{min-height:5.5rem;margin-top:1.4rem;text-align:center;font-size:1.25rem;font-style:italic;color:#fff;padding:0 .5rem}
+.ask{text-align:center}
+.ask p{font-size:1.3rem;margin:0 0 1.6rem}
+.btns{position:relative;height:9rem;display:flex;justify-content:center;align-items:flex-start;gap:1.2rem}
+.yes,.no{border:0;border-radius:999px;padding:.9rem 2.2rem;font-size:1.15rem;transition:transform .2s,left .25s,top .25s}
+.yes{background:var(--rose);color:var(--wine);font-weight:600}
+.yes:hover{transform:scale(1.06)}
+.no{background:transparent;border:1.5px solid var(--blush);color:var(--blush)}
+.no.run{position:absolute}
+#done{display:none;text-align:center;font-size:1.5rem;font-style:italic;color:#fff}
+#done big{display:block;font-family:'Caveat',cursive;font-size:3rem;font-style:normal;color:var(--gold)}
+@media (prefers-reduced-motion:reduce){.seal{animation:none}#main.show{animation:none}.h{display:none}}
+</style>
+</head>
+<body>
+<div id="hearts" aria-hidden="true"></div>
+
+<section id="intro">
+  <h1>Tem uma coisa para você aqui dentro</h1>
+  <div class="env" id="env"><div class="flap"></div><button class="seal" id="seal" aria-label="Abrir a carta">♥</button></div>
+  <p class="hint">toque no coração</p>
+</section>
+
+<section id="main">
+  <article class="letter">
+    <p class="to" id="to"></p>
+    <p>Eu poderia ter mandado uma mensagem, mas você merece mais do que isso. Quis fazer algo só nosso, que você pudesse abrir quantas vezes quisesse.</p>
+    <p>Você faz meus dias ficarem mais leves e até as coisas simples ficarem melhores quando você está por perto. Obrigado por cada risada, por cada conversa e por ficar do meu lado.</p>
+    <p>Esta página é só um jeito de dizer o que eu sinto: você é a melhor parte da minha vida.</p>
+    <p class="sig" id="sig"></p>
+  </article>
+
+  <h2 id="th">Nosso tempo juntos</h2>
+  <div id="time">
+    <div><b id="d">0</b><span>dias</span></div>
+    <div><b id="h">0</b><span>horas</span></div>
+    <div><b id="m">0</b><span>minutos</span></div>
+    <div><b id="s">0</b><span>segundos</span></div>
+  </div>
+
+  <h2>Por que eu te amo</h2>
+  <div class="reasons" id="reasons"></div>
+  <p id="reason" aria-live="polite">Toque nos corações.</p>
+
+  <h2>Uma última pergunta</h2>
+  <div class="ask">
+    <p>Você quer continuar a minha companheira de todas as aventuras?</p>
+    <div class="btns" id="btns">
+      <button class="yes" id="yes">Sim</button>
+      <button class="no" id="no">Não</button>
+    </div>
+    <div id="done"><big>Eu sabia.</big><span id="doneTxt"></span></div>
+  </div>
+</section>
+
+<script>
+// ✏️ PERSONALIZE AQUI
+var CFG = {
+  nome: "Lívia",          // nome dela
+  eu: "Com todo o meu amor, Pedro O.",  // assinatura
+  desde: "2026-04-21T00:00:00",  // início do namoro (vazio = esconde o contador)
+  motivos: [
+    "Seu sorriso conserta qualquer dia ruim.",
+    "Você me entende até quando eu não falo nada.",
+    "Com você, o simples vira especial.",
+    "Seu jeito de cuidar de tudo e de todos.",
+    "Você me faz querer ser alguém melhor.",
+    "Porque ao seu lado eu me sinto em casa."
+  ]
+};
+
+var $ = function(id){return document.getElementById(id)};
+$('to').textContent = 'Para ' + CFG.nome + ',';
+$('sig').textContent = CFG.eu + ' ♥';
+
+// corações flutuando
+var hb = $('hearts');
+function floatHeart(big){
+  var e = document.createElement('span');
+  e.className = 'h'; e.textContent = '♥';
+  e.style.left = Math.random()*100 + '%';
+  e.style.fontSize = (big ? 18+Math.random()*30 : 10+Math.random()*16) + 'px';
+  e.style.animationDuration = (big ? 3+Math.random()*2 : 9+Math.random()*7) + 's';
+  hb.appendChild(e);
+  setTimeout(function(){e.remove()}, 16000);
+}
+setInterval(function(){floatHeart(false)}, 1400);
+
+// abrir envelope
+$('seal').onclick = function(){
+  $('env').classList.add('open');
+  setTimeout(function(){
+    $('intro').classList.add('out');
+    $('intro').style.display = 'none';
+    $('main').classList.add('show');
+    window.scrollTo(0,0);
+  }, 1500);
+};
+
+// contador
+if (CFG.desde) {
+  var t0 = new Date(CFG.desde).getTime();
+  if (!isNaN(t0)) {
+    $('time').classList.add('on');
+    var tick = function(){
+      var s = Math.max(0, Math.floor((Date.now()-t0)/1000));
+      $('d').textContent = Math.floor(s/86400);
+      $('h').textContent = Math.floor(s%86400/3600);
+      $('m').textContent = Math.floor(s%3600/60);
+      $('s').textContent = s%60;
+    };
+    tick(); setInterval(tick, 1000);
+  } else { $('th').style.display = 'none'; }
+} else { $('th').style.display = 'none'; }
+
+// motivos
+CFG.motivos.forEach(function(txt, i){
+  var b = document.createElement('button');
+  b.textContent = '♥'; b.setAttribute('aria-label', 'Motivo ' + (i+1));
+  b.onclick = function(){
+    b.classList.add('seen');
+    $('reason').textContent = '“' + txt + '”';
+  };
+  $('reasons').appendChild(b);
+});
+
+// botão "Não" que foge
+var no = $('no'), box = $('btns'), tries = 0;
+function dodge(e){
+  if (e) e.preventDefault();
+  tries++;
+  no.classList.add('run');
+  var maxX = box.clientWidth - no.offsetWidth, maxY = box.clientHeight - no.offsetHeight;
+  no.style.left = Math.random()*maxX + 'px';
+  no.style.top = Math.random()*maxY + 'px';
+  if (tries > 2) no.textContent = ['Não','Tem certeza?','Pensa de novo','Nem tenta'][Math.min(tries-2,3)];
+  $('yes').style.transform = 'scale(' + Math.min(1 + tries*0.12, 1.7) + ')';
+}
+no.addEventListener('pointerenter', dodge);
+no.addEventListener('click', dodge);
+
+// sim
+$('yes').onclick = function(){
+  box.style.display = 'none';
+  $('done').style.display = 'block';
+  $('doneTxt').textContent = 'Eu te amo, ' + CFG.nome + '.';
+  for (var i=0;i<40;i++) setTimeout(function(){floatHeart(true)}, i*90);
+};
+</script>
+</body>
+</html>
